@@ -20,7 +20,7 @@ def load_dataset(tokenizer):
     dataset = ld("Anthropic/hh-rlhf")
     dataset = dataset["train"].select(range(config["dataset"]["max_samples"]))
     dataset = dataset.map(format_dataset)
-    dataset = dataset.filter(lambda x: len(tokenizer(x["prompt"])["input_ids"]) <= config["dataset"]["max_prompt_length"])
+    dataset = dataset.filter(lambda x: len(tokenizer(x["prompt"])["input_ids"]) <= config["training"]["max_prompt_length"])
 
     return dataset
 
