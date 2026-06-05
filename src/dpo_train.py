@@ -76,7 +76,7 @@ def train():
     Run the full training loop.
     Calls load_dataset, load_model, build_tpo_trainer in sequence.
     """
-    wandb.init()
+    wandb.init(project= "rlhf")
     model, tokenizer = load_model()
     dataset = load_dataset(tokenizer)
     trainer = build_dpo_trainer(model, tokenizer, dataset)
