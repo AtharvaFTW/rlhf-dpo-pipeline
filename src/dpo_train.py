@@ -2,15 +2,16 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset as ld
 from src.utils import format_dataset
 from dotenv import load_dotenv
-from peft import LoraConfig, TaskType, get_peft_model 
+from peft import LoraConfig, TaskType, get_peft_model
+from trl import DPOTrainer, DPOConfig
 import yaml
 
 load_dotenv()
 
 with open("configs/dpo_config.yaml", "r") as f:
-    config = yaml.safe_laod(f)
+    config = yaml.safe_load(f)
 
-def load_dataset():
+def load_dataset(tokenizer):
     """
     Load and prepare Anthropic/hh-rlhf dataset from HuggingFace.
     Returns:
@@ -19,6 +20,7 @@ def load_dataset():
     dataset = ld("Anthropic/hh-rlhf")
     dataset = dataset["train"].select(range(config["dataset"]["max_samples"]))
     dataset = dataset.map(format_dataset)
+    dataset = dataset.filter(lambda x: len(tokenizer(x["prompt"])["input_ids"]) <= config["dataset"]["max_prompt_length"])
 
     return dataset
 
@@ -43,27 +45,40 @@ def load_model():
     lora_model = get_peft_model(model, lora_config)
     return lora_model, tokenizer
 
-def build_dpo_trainer():
+def build_dpo_trainer(lora_model, tokenizer, dataset):
     """
     Build the TRL DPOTrainer with model, dataset, and training args.
     Returns:
         configured DPOTrainer.
     """
-    pass
+    dpo_config = DPOConfig(
+        output_dir = config["training"]["output_dir"],
+        per_device_train_batch_size = config["training"]["per_device_train_batch_size"],
+        num_train_epochs = config["training"]["num_train_epochs"],
+        gradient_accumulation_steps = config["training"]["gradient_accumulation_steps"],
+        learning_rate = config["training"]["learning_rate"],
+        max_length = config["training"]["max_length"]
+    )
+    trainer = DPOTrainer(
+        model = lora_model,
+        args = dpo_config,
+        processing_class = tokenizer,
+        train_dataset = dataset,
+        )
+    
+    return trainer
 
 def train():
     """
     Run the full training loop.
     Calls load_dataset, load_model, build_tpo_trainer in sequence.
     """
+    model, tokenizer = load_model()
+    dataset = load_dataset(tokenizer)
+    trainer = build_dpo_trainer(model, tokenizer, dataset)
+    trainer.train()
     pass
 
 if __name__ == "__main__":
-    from src.utils import format_dataset
-    res = []
-    dataset = load_dataset()
-    for i in range(5):
-        re = format_dataset(dataset["train"][i])
-        res.append(re)
-    print(res)
+    train()
     
