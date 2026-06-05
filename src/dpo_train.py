@@ -56,7 +56,7 @@ def build_dpo_trainer(lora_model, tokenizer, dataset):
         per_device_train_batch_size = config["training"]["per_device_train_batch_size"],
         num_train_epochs = config["training"]["num_train_epochs"],
         gradient_accumulation_steps = config["training"]["gradient_accumulation_steps"],
-        learning_rate = config["training"]["learning_rate"],
+        learning_rate = float(config["training"]["learning_rate"]),
         max_length = config["training"]["max_length"]
     )
     trainer = DPOTrainer(
