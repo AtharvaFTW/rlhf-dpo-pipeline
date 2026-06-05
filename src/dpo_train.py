@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 from peft import LoraConfig, TaskType, get_peft_model
 from trl import DPOTrainer, DPOConfig
 import yaml
+import wandb
+import os
+
 
 load_dotenv()
 
@@ -73,11 +76,22 @@ def train():
     Run the full training loop.
     Calls load_dataset, load_model, build_tpo_trainer in sequence.
     """
+    wandb.init()
     model, tokenizer = load_model()
     dataset = load_dataset(tokenizer)
     trainer = build_dpo_trainer(model, tokenizer, dataset)
     trainer.train()
-    pass
+    save_path = os.path.join(config["training"]["output_dir"],"final")
+    trainer.save_model(save_path)
+
+    artifact = wandb.Artifact(
+        name = "rlhf",
+        type = "model",
+        description = "final"
+    )
+    artifact.add_dir(save_path)
+    wandb.log_artifact(artifact)
+    wandb.finish()
 
 if __name__ == "__main__":
     train()
