@@ -15,6 +15,7 @@ training:
   learning_rate: 5e-5
   max_length: 512
   max_prompt_length: 256
+  report_to: "wandb"
 
 peft:
   lora_r: 16
