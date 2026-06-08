@@ -62,7 +62,7 @@ def generate_response(model, tokenizer, prompt:str, max_new_tokens:int = 200) ->
                                     max_new_tokens = max_new_tokens,
                                     eos_token_id = tokenizer.eos_token_id, 
                                     pad_token_id = tokenizer.eos_token_id,
-                                    repetition_penality = 1.3)
+                                    repetition_penalty = 1.3)
 
     input_length = inputs["input_ids"].shape[1]
     response_ids = generated_ids[0][input_length:]
