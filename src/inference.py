@@ -103,7 +103,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--prompt", type = str)
+    parser.add_argument("--prompt", type = str, required=True)
 
     args = parser.parse_args()
 
