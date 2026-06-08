@@ -119,7 +119,6 @@ conda-meta/
 
 # Local model weights / Hugging Face cache
 *checkpoint*/
-outputs/
 wandb/
 runs/
 .cache/
