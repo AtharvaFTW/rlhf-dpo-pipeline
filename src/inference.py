@@ -58,7 +58,7 @@ def generate_response(model, tokenizer, prompt:str, max_new_tokens:int = 200) ->
 
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
-    generated_ids = model.generate(**inputs, max_new_tokens = max_new_tokens)
+    generated_ids = model.generate(**inputs, max_new_tokens = max_new_tokens,eos_token = tokenizer.eos_token_id, pad_token_id = tokenizer.eos_token_id)
 
     input_length = inputs["input_ids"].shape[1]
     response_ids = generated_ids[0][input_length:]
@@ -100,13 +100,18 @@ def compare(prompt: str, config: dict) -> dict:
 
 if __name__ == "__main__":
     import yaml
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--prompt", type = str)
+
+    args = parser.parse_args()
 
     with open(r"configs/dpo_config.yaml") as f:
         config = yaml.safe_load(f)
 
-    test_prompt = "Human: What is the best way to learn machine learning? \n\n Assistant:"
 
-    result = compare(test_prompt, config)
+    result = compare(args.prompt, config)
     print("-"*100)
     print("===PROMPT===")
     print(result["prompt"])
