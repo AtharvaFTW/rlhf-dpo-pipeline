@@ -98,3 +98,20 @@ def compare(prompt: str, config: dict) -> dict:
         "dpo_response" : dpo_response
     }
 
+if __name__ == "__main__":
+    import yaml
+
+    with open(r"configs/dpo_config.yaml") as f:
+        config = yaml.safe_load(f)
+
+    test_prompt = "Human: What is the best way to learn machine learning? \n\n Assistant:"
+
+    result = compare(test_prompt, config)
+    print("-"*100)
+    print("===PROMPT===")
+    print(result["prompt"])
+    print("===BASE===")
+    print(result["base_response"])
+    print("===DPO===")
+    print(result["dpo_response"])
+    print("-"*100)
