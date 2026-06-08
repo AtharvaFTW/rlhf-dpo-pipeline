@@ -18,7 +18,7 @@ def load_base_model(config: dict):
 
     model = AutoModelForCausalLM.from_pretrained(
                                         config["model"]["name"],
-                                        torch_dtype = torch.float16,
+                                        dtype = torch.float16,
                                         device_map = "auto")
 
     return model
@@ -35,7 +35,7 @@ def load_dpo_model(config: dict):
     """
     base_model = AutoModelForCausalLM.from_pretrained(
                                             config["model"]["name"],
-                                            torch_dtype= torch.float16,
+                                            dtype= torch.float16,
                                             device_map = "auto")
 
     adapter_model = PeftModel.from_pretrained(base_model, config["adapter"]["dir"])
