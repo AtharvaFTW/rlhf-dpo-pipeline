@@ -118,7 +118,7 @@ conda-meta/
 .idea/
 
 # Local model weights / Hugging Face cache
-*checkpoint*/
+
 wandb/
 runs/
 .cache/
