@@ -5,7 +5,7 @@
 
 Direct Preference Optimization is a policy optimization technique which is claimed to be superior to the RLHF(PPO). 
 
-### How is it Superior?
+### And how is it superior to RLHF (PPO)?
 
 The problem is RLHF's score-maxing game, where it learns to outputs that score high on reward model without actually getting better itself. The DPO expolits this by mathematically reparameterizing the reward function in terms of the policy itself, meaning the RM is implicitly embedded directly within the policy, eliminating the need of seperate RM as the math shows the ability to express the optimal reward directly through the trained policy to the reference policy.
 
@@ -43,3 +43,7 @@ peft:
   lora_dropout: 0.05
   target_modules: ["q_porj", "v_proj"]
 ```
+
+Infra used: GCP, gpu:nividia-L4, ram:16gb, g2-standard machine
+
+### Runs
