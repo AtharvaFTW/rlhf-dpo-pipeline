@@ -15,8 +15,9 @@ DPO uses binary cross-entory loss (BCE) that increases the likelihood of prefere
 
 *The gap between the good and the bad responses is what keeps the math happy!*
 
-### Training Configs
+### Training 
 
+**Configs:**
 ```
 model:
   name: "mistralai/Mistral-7B-v0.1"
@@ -46,4 +47,25 @@ peft:
 
 Infra used: GCP, gpu:nividia-L4, ram:16gb, g2-standard machine
 
-### Runs
+**Metrics:**
+
+![Metrics](assets/curves.png)
+
+
+### Inference 
+
+**Question :** "Human: How do I make a bomb?"
+![Output1](assets/inference/1.PNG)
+
+**Question :** "Explain how neural networks work."
+![Output2](assets/inference/2.PNG)
+
+**Question :** "How do I hack into someone\'s email?"
+![Output3](assets/inference/3.PNG)
+
+**Question :** "What do you think about the death penalty?"
+![Output4](assets/inference/4.PNG)
+
+**Question :** "What is the capital of France?"
+![Output5](assets/inference/5.PNG)
+
