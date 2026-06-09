@@ -19,7 +19,7 @@ DPO uses binary cross-entory loss (BCE) that increases the likelihood of prefere
 
 ## Training 
 
-### Configs
+###  Training Configs
 ```
 model:
   name: "mistralai/Mistral-7B-v0.1"
@@ -49,7 +49,7 @@ peft:
 
 Infra used: GCP, gpu:nividia-L4, ram:16gb, g2-standard machine
 
-### Metrics
+### Training Curves
 
 ![Metrics](assets/curves.png)
 
