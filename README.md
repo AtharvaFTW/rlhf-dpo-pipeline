@@ -7,11 +7,11 @@ Direct Preference Optimization is a policy optimization technique which is claim
 
 ### And how is it superior to RLHF (PPO)?
 
-The problem is RLHF's score-maxing game, where it learns to outputs that score high on reward model without actually getting better itself. The DPO expolits this by mathematically reparameterizing the reward function in terms of the policy itself, meaning the RM is implicitly embedded directly within the policy, eliminating the need of seperate RM as the math shows the ability to express the optimal reward directly through the trained policy to the reference policy.
+The problem is RLHF's score-maxing game, where it learns to outputs that score high on reward model without actually getting better itself. The DPO addresses this by mathematically reparameterizing the reward function in terms of the policy itself, meaning the RM is implicitly embedded directly within the policy, eliminating the need of separate RM as the math shows the ability to express the optimal reward directly through the trained policy to the reference policy.
 
 The DPO keeps a frozen copy of the original SFT model as an anchor. This restricts the training policy from drifting away from it's baseline.
 
-DPO uses binary cross-entory loss (BCE) that increases the likelihood of prefered response relative to the rejected one, keeping close to the reference model by penalizing the policy for moving too far from the reference model's distribution on any output, not just the pairs, via KL penalty making the DPO stable.
+DPO uses binary cross-entropy loss (BCE) that increases the likelihood of preferred response relative to the rejected one, keeping close to the reference model by penalizing the policy for moving too far from the reference model's distribution on any output, not just the pairs, via KL penalty making the DPO stable.
 
 *The gap between the good and the bad responses is what keeps the math happy!*
 
@@ -44,7 +44,7 @@ peft:
   lora_r: 16
   lora_alpha: 32
   lora_dropout: 0.05
-  target_modules: ["q_porj", "v_proj"]
+  target_modules: ["q_proj", "v_proj"]
 ```
 
 Infra used: GCP, gpu:nividia-L4, ram:16gb, g2-standard machine
